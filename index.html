@@ -738,11 +738,22 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size
 @media (max-width:640px){
   .panel{width:auto;left:max(12px,env(safe-area-inset-left,0px));padding:10px 12px;gap:8px;max-height:calc(100% - 170px)}
   .panel h1{font-size:16px}
-  .panel.collapsed .hide-c{display:none}
-  #toggle{display:block}
-  .info{left:max(12px,env(safe-area-inset-left,0px));width:auto}
+  .panel.collapsed{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 10px}
+  .panel.collapsed > :not(.keep){display:none}
+  .panel.collapsed h1{font-size:14.5px;flex:1;min-width:0}
+  .panel.collapsed #leg-val,.panel.collapsed #leg-cl{order:3;width:100%}
+  .panel.collapsed .grad{height:10px}
+  .panel.collapsed .legend span{height:16px;font-size:11px}
+  .panel.collapsed .legend-ends{display:none}
+  #toggle{display:block;border:1px solid var(--accent);border-radius:7px;padding:4px 9px;align-self:center}
+  .info{left:max(12px,env(safe-area-inset-left,0px));width:auto;padding:10px 36px 10px 12px;gap:10px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .info .big{min-width:52px;height:46px;font-size:18px}
+  .info .st{display:none}
+  .leaflet-control-zoom{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.info{padding-left:34px}
+.info-x{position:absolute;top:4px;left:6px;font-size:20px}
 .about-btn{align-self:flex-start;border:1px solid var(--accent);background:transparent;color:var(--accent);font:700 13px var(--font-body);padding:6px 10px;border-radius:7px;cursor:pointer}
 .about-btn:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 .about-btn:focus-visible,.x:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -777,7 +788,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size
 <div id="map" role="application" aria-label="מפת המדד החברתי-כלכלי של ישראל"></div>
 
 <div class="panel" id="panel" dir="rtl">
-  <h1>המדד החברתי-כלכלי בישראל</h1>
+  <h1 class="keep">המדד החברתי-כלכלי בישראל</h1>
   <p class="sub hide-c">מדד הלמ״ס 2021. מרחוק רואים רשויות; מזום 11 ומעלה רואים שכונות (אזורים סטטיסטיים) ויישובים במועצות האזוריות, עם גבולות הערים מעליהם.</p>
   <button type="button" class="about-btn" id="about-open">מה המדד הזה ואיך לקרוא אותו?</button>
   <div class="lvl" id="lvl"><i></i><span>רמת תצוגה: ערים ורשויות</span></div>
@@ -786,8 +797,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size
       <button type="button" id="m-val" aria-pressed="true">ערך המדד</button>
       <button type="button" id="m-cl" aria-pressed="false">אשכול 1–10</button>
     </div></div>
-  <div id="leg-val"><div class="grad" id="grad"></div><div class="ticks" id="ticks"></div><div class="legend-ends"><span>נמוך</span><span>גבוה</span></div></div>
-  <div id="leg-cl" hidden><div class="legend" id="legend"></div><div class="legend-ends" style="margin-top:2px"><span>נמוך</span><span>גבוה</span></div></div>
+  <div id="leg-val" class="keep"><div class="grad" id="grad"></div><div class="ticks" id="ticks"></div><div class="legend-ends"><span>נמוך</span><span>גבוה</span></div></div>
+  <div id="leg-cl" class="keep" hidden><div class="legend" id="legend"></div><div class="legend-ends" style="margin-top:2px"><span>נמוך</span><span>גבוה</span></div></div>
   <div class="nodata"><i></i><span>אין נתון: הלמ״ס לא פרסמה מדד לאזור</span></div>
   <div class="row hide-c"><label>מפת רקע</label>
     <div class="seg" role="group" aria-label="מפת רקע">
@@ -799,10 +810,11 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size
   <input id="q" list="places" placeholder="חיפוש עיר, יישוב או שכונה…" autocomplete="off" aria-label="חיפוש עיר, יישוב או שכונה">
   <datalist id="places"></datalist>
   <div class="src hide-c">מקור: הלמ״ס, אפיון יחידות גאוגרפיות לפי הרמה החברתית-כלכלית 2021 (פורסם 2024), חלוקת אזורים סטטיסטיים 2011. ערך המדד הוא ציון רציף שבו 0 הוא הממוצע; כל רמה (רשויות, יישובים, אזורים) חושבה בנפרד. עיבוד גאוגרפי: <a href="https://github.com/anatoly314/israeli-gis" target="_blank" rel="noopener">israeli-gis</a>.</div>
-  <button id="toggle" type="button">הצג פרטים</button>
+  <button id="toggle" class="keep" type="button">הגדרות</button>
 </div>
 
 <div class="info empty" id="info" dir="rtl" aria-live="polite">
+  <button type="button" class="x info-x" id="info-x" aria-label="סגירת הכרטיס">×</button>
   <div class="big" id="ibig">–</div>
   <div class="txt"><div class="nm" id="inm">העבירו את העכבר מעל אזור</div><div class="ct" id="ict">או הקישו עליו בטלפון כדי לראות שם וציון</div><div class="meta" id="imeta"></div><div class="st" id="ist"></div></div>
 </div>
@@ -934,7 +946,7 @@ function restyle(){
 const fmt=n=>n?n.toLocaleString('he-IL'):'–';
 const nbLabel=p=>p.nb?p.nb.slice(0,2).join(' · '):'';
 function show(p,kind){
-  const info=$('info'),big=$('ibig');
+  const info=$('info'),big=$('ibig');info.hidden=false;
   if(has(p)){const c=colorOf(p);info.classList.remove('empty');big.style.background=c;big.style.color=ink(c);
     big.innerHTML=mode==='val'?`${fmtV(p.i)}<small>אשכול ${p.c}</small>`:`${p.c}<small>ערך ${fmtV(p.i)}</small>`;}
   else{info.classList.add('empty');big.style.background='';big.style.color='';big.textContent='אין נתון'}
@@ -1022,8 +1034,10 @@ $('q').addEventListener('change',e=>{const hit=index[e.target.value.trim()];if(!
   show(hit.fs[0].properties,hit.kind);e.target.blur();});
 
 const panel=$('panel'),tg=$('toggle');
-if(matchMedia('(max-width:640px)').matches)panel.classList.add('collapsed');
-tg.addEventListener('click',()=>{panel.classList.toggle('collapsed');tg.textContent=panel.classList.contains('collapsed')?'הצג פרטים':'הסתר פרטים'});
+const mobile=matchMedia('(max-width:640px)').matches;
+if(mobile){panel.classList.add('collapsed');$('info').hidden=true;}
+$('info-x').onclick=()=>{$('info').hidden=true};
+tg.addEventListener('click',()=>{panel.classList.toggle('collapsed');tg.textContent=panel.classList.contains('collapsed')?'הגדרות':'סגירה'});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',restyle);
 
 setBase('none');setLevel(true);drawLabels();
