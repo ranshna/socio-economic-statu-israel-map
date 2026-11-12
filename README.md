@@ -1,1 +1,1 @@
-# socio-economic-statu-israel-map
+# socios-economic-statu-israel-map
